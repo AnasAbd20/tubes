@@ -28,6 +28,7 @@ func seedData(p *perangkat, totalPerangkat *int) {
 }
 
 func cetakLogo() {
+	fmt.Println("==========================================================================")
 	fmt.Println("██████╗  ██████╗ ██╗    ██╗███████╗██████╗     ██╗      ██████╗  ██████╗ ")
 	fmt.Println("██╔══██╗██╔═══██╗██║    ██║██╔════╝██╔══██╗    ██║     ██╔═══██╗██╔════╝ ")
 	fmt.Println("██████╔╝██║   ██║██║ █╗ ██║█████╗  ██████╔╝    ██║     ██║   ██║██║  ███╗")
@@ -134,16 +135,22 @@ func addPerangkat(p *perangkat, totalPerangkat *int) {
 func hapusPerangkat(p *perangkat, totalPerangkat *int) {
 	// Fungsi untuk menghapus perangkat elektronik dari array daftar elektronik
 	var target string
-	var idx, i int
+	var selPer, i, found int
 	fmt.Print("Masukkan nama perangkat yang ingin dihapus: ")
 	fmt.Scan(&target)
 	// Mencari indeks perangkat berdasarkan nama
-	idx = cariNamaPerangkat(*p, *totalPerangkat, target)
-	if idx == -1 {
+	found = cariHitungNamaPerangkat(*p, *totalPerangkat, target)
+	if found < 1 {
 		fmt.Println("Perangkat tidak ditemukan")
 		return
+	} else if found > 1 {
+		fmt.Print("Pilih nomor perangkat yang ingin dihapus: ")
+		fmt.Scan(&selPer)
+		selPer -= 1
+	} else if found == 1 {
+		selPer = cariNamaPerangkat(*p, *totalPerangkat, target)
 	}
-	for i = idx; i < *totalPerangkat-1; i++ {
+	for i = selPer; i < *totalPerangkat-1; i++ {
 		p[i] = p[i+1]
 	}
 	// Update total perangkat setelah penghapusan
@@ -153,14 +160,20 @@ func hapusPerangkat(p *perangkat, totalPerangkat *int) {
 func editPerangkat(p *perangkat, totalPerangkat int) {
 	// Fungsi untuk mengedit informasi perangkat elektronik dalam array daftar elektronik
 	var target string
-	var idx, selKat int
+	var selKat, found, selPer int
 	fmt.Print("Masukkan nama perangkat yang ingin diedit: ")
 	fmt.Scan(&target)
 	// Mencari indeks perangkat berdasarkan nama
-	idx = cariNamaPerangkat(*p, totalPerangkat, target)
-	if idx == -1 {
+	found = cariHitungNamaPerangkat(*p, totalPerangkat, target)
+	if found < 1 {
 		fmt.Println("Perangkat tidak ditemukan")
 		return
+	} else if found == 1 {
+		selPer = cariNamaPerangkat(*p, totalPerangkat, target)
+	} else {
+		fmt.Print("Pilih nomor perangkat yang ingin diedit: ")
+		fmt.Scan(&selPer)
+		selPer -= 1
 	}
 	cetakKategori()
 	fmt.Print("Pilih kategori yang ingin diedit: ")
@@ -168,19 +181,56 @@ func editPerangkat(p *perangkat, totalPerangkat int) {
 	switch selKat {
 	case 1:
 		fmt.Print("Masukkan nama perangkat baru: ")
-		fmt.Scan(&p[idx].nama)
+		fmt.Scan(&p[selPer].nama)
 	case 2:
 		fmt.Print("Masukkan lokasi perangkat baru: ")
-		fmt.Scan(&p[idx].lokasi)
+		fmt.Scan(&p[selPer].lokasi)
 	case 3:
 		fmt.Print("Masukkan daya perangkat baru (Watt): ")
-		fmt.Scan(&p[idx].daya)
+		fmt.Scan(&p[selPer].daya)
 	case 4:
 		fmt.Print("Masukkan durasi penggunaan perangkat baru (Jam/hari): ")
-		fmt.Scan(&p[idx].durasi)
+		fmt.Scan(&p[selPer].durasi)
 	default:
-		fmt.Println("Kategori tidak valid")
+		fmt.Println("Kategori tidak valid. Pengeditan dibatalkan.")
 	}
+}
+
+func cariHitungNamaPerangkat(p perangkat, totalPerangkat int, target string) int {
+	// Mencari target nama dalam data lalu dihitung jumlah yang sesuai nya
+	var i int
+	var found int
+	var arrIndexFound [NMAX]int
+	for i = 0; i < totalPerangkat; i++ {
+		if strUpper(target) == strUpper(p[i].nama) {
+			arrIndexFound[i] = 1
+			found++
+		}
+	}
+	if found < 1 {
+		return found
+	} else if found > 1 {
+		cetakNamaFound(p, totalPerangkat, target, arrIndexFound)
+	}
+	return found
+
+}
+
+func cetakNamaFound(p perangkat, totalPerangkat int, target string, arrIndexFound [NMAX]int) {
+	// Fungsi untuk mencetak daftar perangkat elektronik yang namanya sesuai dengan target beserta informasi lengkapnya
+	var i int
+	fmt.Printf("Daftar Perangkat Elektronik dengan Nama  %s:\n", strUpper(target))
+	fmt.Printf("====================================================================================================\n")
+	fmt.Printf("| %-3s | %-15s | %-15s | %-4s | %-12s | %-25s |\n", "No", "Nama", "Lokasi", "Daya (Watt)", "Durasi (Jam)", "Total Konsumsi (Watt/jam)")
+	fmt.Printf("=--------------------------------------------------------------------------------------------------=\n")
+	// Loop untuk mencetak
+	for i = 0; i < totalPerangkat; i++ {
+		// Pengecekan apakah index ini ada (1) dalam array arrIndexFound untuk dicetak
+		if arrIndexFound[i] == 1 {
+			fmt.Printf("| %-3d | %-15s | %-15s | %-11d | %-12d | %-25d |\n", i+1, p[i].nama, p[i].lokasi, p[i].daya, p[i].durasi, p[i].konsumsiPerangkat)
+		}
+	}
+	fmt.Printf("====================================================================================================\n")
 }
 
 func cetakDaftarPerangkat(p perangkat, totalPerangkat int) {
