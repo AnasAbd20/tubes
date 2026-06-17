@@ -53,14 +53,14 @@ func main() {
 		switch pilihMenu {
 		case 1:
 			addPerangkat(&p, &totalPerangkat)
-			// Setelah menambahkan perangkat, sorted = false untuk menandakan data yang baru ditambahkan belum diurutkan
+			// Setelah menambahkan perangkat, variabel string urut none karena array tidak terurut
 			urut = "none"
 		case 2:
 			hapusPerangkat(&p, &totalPerangkat)
 			urut = "none"
 		case 3:
 			editPerangkat(&p, totalPerangkat)
-			// Setelah mengedit perangkat, sorted = false untuk menandakan data yang telah diedit belum diurutkan
+			// Setelah mengedit perangkat, variabel string urut none karena array tidak terurut
 			urut = "none"
 		case 4:
 			// Cetak daftar perangkat elektronik beserta informasi lengkapnya
