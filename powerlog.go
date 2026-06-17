@@ -315,8 +315,10 @@ func searchingPerangkat(p perangkat, totalPerangkat int, urut string) {
 		} else if urut == "turun" {
 			cariPerangkatBinDesc(p, totalPerangkat, selKat, target)
 		} else {
-			fmt.Println("Data belum diurutkan, silakan urutkan data terlebih dahulu sebelum menggunakan pencarian binary")
-			return
+			sortAscending(&p,totalPerangkat,1)
+            fmt.Println("Data belum diurutkan, data akan otomatis di sorting untuk sementara dengan kategori nama secara ascending.")
+            cariPerangkatBinAsc(p, totalPerangkat, selKat, target)
+			
 		}
 	default:
 		fmt.Println("Pilihan tidak valid, silakan pilih antara 1-2")
@@ -383,6 +385,7 @@ func cariPerangkatBinAsc(p perangkat, totalPerangkat int, selKat int, target str
 		for left <= right {
 			mid = (left + right) / 2
 			if strUpper(p[mid].nama) == target {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if strUpper(p[mid].nama) < target {
@@ -397,6 +400,7 @@ func cariPerangkatBinAsc(p perangkat, totalPerangkat int, selKat int, target str
 		for left <= right {
 			mid = (left + right) / 2
 			if strUpper(p[mid].lokasi) == target {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if strUpper(p[mid].lokasi) < target {
@@ -411,6 +415,7 @@ func cariPerangkatBinAsc(p perangkat, totalPerangkat int, selKat int, target str
 		for left <= right {
 			mid = (left + right) / 2
 			if p[mid].daya == targetInt {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if p[mid].daya < targetInt {
@@ -425,6 +430,7 @@ func cariPerangkatBinAsc(p perangkat, totalPerangkat int, selKat int, target str
 		for left <= right {
 			mid = (left + right) / 2
 			if p[mid].durasi == targetInt {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if p[mid].durasi < targetInt {
@@ -448,6 +454,7 @@ func cariPerangkatBinDesc(p perangkat, totalPerangkat int, selKat int, target st
 		for left <= right {
 			mid = (left + right) / 2
 			if strUpper(p[mid].nama) == target {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if strUpper(p[mid].nama) > target {
@@ -462,6 +469,7 @@ func cariPerangkatBinDesc(p perangkat, totalPerangkat int, selKat int, target st
 		for left <= right {
 			mid = (left + right) / 2
 			if strUpper(p[mid].lokasi) == target {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if strUpper(p[mid].lokasi) > target {
@@ -476,6 +484,7 @@ func cariPerangkatBinDesc(p perangkat, totalPerangkat int, selKat int, target st
 		for left <= right {
 			mid = (left + right) / 2
 			if p[mid].daya == targetInt {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if p[mid].daya > targetInt {
@@ -490,6 +499,7 @@ func cariPerangkatBinDesc(p perangkat, totalPerangkat int, selKat int, target st
 		for left <= right {
 			mid = (left + right) / 2
 			if p[mid].durasi == targetInt {
+				fmt.Println("Data ditemukan")
 				fmt.Printf("%d. Nama: %s, Lokasi: %s\n", mid+1, p[mid].nama, p[mid].lokasi)
 				return
 			} else if p[mid].durasi > targetInt {
